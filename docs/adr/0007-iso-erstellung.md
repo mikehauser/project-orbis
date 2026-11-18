@@ -1,6 +1,6 @@
 # ADR 0007 – ISO-Erstellung mit Titanoboa (Live-ISO) statt bootc-image-builder
 
-- **Status:** vorgeschlagen am 18.11.2026, zum Testen umgesetzt. Bestätigung durch Mike offen. Rückgängig machbar ohne Folgen für das Image selbst.
+- **Status:** entschieden am 18.11.2026: **Option A, Titanoboa** (Mike: "ja bleibe dabei, ich will ein gut funktionierendes produkt nachher"). Umgesetzt, noch nicht getestet.
 - **Kontext:** Die erste ISO sollte mit bootc-image-builder (BIB, Workflow `build-disk.yml`) entstehen, wie in der Vorlage ublue-os/image-template. Das ist am 18.11.2026 dreimal fehlgeschlagen:
   - ISO aus dem Orbis-Image (Lauf 44361156742) und, zur Kontrolle, aus dem **unveränderten** Bazzite-Image `ghcr.io/ublue-os/bazzite:stable` (Lauf 44362353359): BIB meldet "Unknown distro bazzite" und findet keines der Installer-Pakete (auch nicht `coreutils`, `kernel`, `anaconda`). Ursache liegt also nicht in der Orbis-Schicht, sondern im Zusammenspiel BIB und Bazzite auf Fedora 45.
   - VM-Abbild qcow2 (Lauf 44363625411): Abbruch mit `mount: /run/osbuild/containers/storage: permission denied` im Builder. Ursache nicht geklärt.
