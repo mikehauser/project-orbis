@@ -14,7 +14,7 @@ Jeder Test mit Datum, Umgebung, Version und Ergebnis. Tests in einer VM zählen 
 | ISO startet in der VM | ✅ ja (Mike, 18.11.2026) |
 | Live-Sitzung mit Desktop | ✅ ja. Bemerkung Mike: Oberfläche sieht "übelst langweilig" aus (erwartet, Design folgt in Phase 2) |
 | Installer startet | ✅ ja, Installation läuft |
-| Installation läuft durch | offen |
+| Installation läuft durch | ❌ nein (20:36). Anaconda-Fehler beim Einspielen des Images: `ostree container image deploy ... --transport=containers-storage` → `Unencapsulating base: failed to invoke method GetRawBlob: read /var/lib/containers/storage/overlay/c14b1f…/diff/sysroot/ostree/repo/objects/a5/ba3af9….file: input/output error`. Ursache offen. Verdacht 1: beschädigte ISO-Datei (Prüfsumme prüfen). Verdacht 2: Lesefehler der Live-Umgebung (Kernelmeldungen prüfen). |
 | MOK-Schlüssel aufnehmen (Secure Boot) | offen |
 | Installiertes System startet, Anmeldung | offen |
 | Name "Orbis" in Systeminfo (os-release) | offen |
