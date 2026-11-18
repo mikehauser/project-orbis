@@ -13,4 +13,16 @@ third_party/image-template/LICENSE):
 Änderungen gegenüber der Vorlage: Pfade, Branding, Basisimage, Auslösung der
 Workflows, optionale Signierung, nur ISO-Ausgabe.
 
+Teile dieses Repositories sind von ublue-os/bazzite abgeleitet
+(https://github.com/ublue-os/bazzite, Lizenz Apache-2.0, Kopie unter
+third_party/bazzite/LICENSE), Stand Commit 5d71c4376169910c25bc06a3537f4780521e7435:
+  - installer/ (Live-ISO-Umgebung: Containerfile, build.sh, titanoboa_hook_*.sh,
+    system_files/, kde_flatpaks/flatpaks)
+  - .github/workflows/build-iso.yml (aus .github/workflows/build_iso.yml)
+Änderungen sind in den Dateien mit "ORBIS:" markiert und in
+docs/adr/0007-iso-erstellung.md beschrieben.
+
+Die ISO wird mit ublue-os/titanoboa gebaut (https://github.com/ublue-os/titanoboa,
+Lizenz Apache-2.0). Titanoboa wird als GitHub Action eingebunden, nicht kopiert.
+
 Eine eigene Lizenz für Orbis-eigenen Code ist noch nicht gewählt (offen, vor Veröffentlichung klären).

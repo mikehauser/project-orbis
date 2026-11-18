@@ -1,0 +1,21 @@
+# ADR 0007 – ISO-Erstellung mit Titanoboa (Live-ISO) statt bootc-image-builder
+
+- **Status:** vorgeschlagen am 18.11.2026, zum Testen umgesetzt. Bestätigung durch Mike offen. Rückgängig machbar ohne Folgen für das Image selbst.
+- **Kontext:** Die erste ISO sollte mit bootc-image-builder (BIB, Workflow `build-disk.yml`) entstehen, wie in der Vorlage ublue-os/image-template. Das ist am 18.11.2026 dreimal fehlgeschlagen:
+  - ISO aus dem Orbis-Image (Lauf 44361156742) und, zur Kontrolle, aus dem **unveränderten** Bazzite-Image `ghcr.io/ublue-os/bazzite:stable` (Lauf 44362353359): BIB meldet "Unknown distro bazzite" und findet keines der Installer-Pakete (auch nicht `coreutils`, `kernel`, `anaconda`). Ursache liegt also nicht in der Orbis-Schicht, sondern im Zusammenspiel BIB und Bazzite auf Fedora 45.
+  - VM-Abbild qcow2 (Lauf 44363625411): Abbruch mit `mount: /run/osbuild/containers/storage: permission denied` im Builder. Ursache nicht geklärt.
+  - Bazzite selbst baut seine offiziellen ISOs nicht mehr mit BIB, sondern mit **Titanoboa** (ublue-os/titanoboa, Apache-2.0): eine Live-ISO, die das System zum Ausprobieren startet und daraus den Installer Anaconda öffnet. Geprüft im Bazzite-Quellcode, Commit `5d71c4376169910c25bc06a3537f4780521e7435` vom 17.11.2026, Datei `.github/workflows/build_iso.yml` und Ordner `installer/`.
+- **Optionen:**
+  - **A. Titanoboa wie Bazzite (empfohlen).** Gleicher, täglich genutzter Weg wie das Upstream-Projekt. Braucht keine Paketauflösung durch BIB. Nachteil: eigener Ordner `installer/` mit von Bazzite übernommenen Skripten, die bei Bazzite-Änderungen nachgezogen werden müssen.
+  - **B. Bei BIB bleiben und auf eine Korrektur warten oder BIB-Versionen durchprobieren.** Wenig eigener Code, aber unklar wie lange, und nicht der Weg, den Bazzite selbst pflegt.
+  - **C. Nur ein VM-Abbild statt ISO.** Hilft für die VM, aber nicht für echte Hardware und Freunde, und der qcow2-Build scheitert derzeit ebenfalls.
+- **Empfehlung:** A. Begründung: erprobt, unabhängig vom BIB-Fehler, und eine Live-ISO ist für Freunde später ohnehin das Bessere (erst ausprobieren, dann installieren).
+- **Umsetzung (Stand 18.11.2026, implementiert, nicht getestet):**
+  - `installer/` (Containerfile, build.sh, zwei Titanoboa-Hooks, Systemdateien, Flatpak-Liste), abgeleitet von Bazzite. Jede Abweichung ist im Code mit `ORBIS:` markiert. Wichtigste Abweichungen: Name aus `branding/branding.env`, Installations-Image aus dem Workflow statt Suche nach `bazzite*`, kein GNOME, kein Bazzite-Hintergrundbild, kein NVIDIA-Hilfsdialog, kein Werkzeug zur Bootloader-Wiederherstellung in der Live-Sitzung (Bootloader-Eingriffe nur mit Zustimmung), `bootc switch` ohne `--enforce-container-sigpolicy`, weil Orbis noch nicht signiert ist.
+  - Workflow `.github/workflows/build-iso.yml` ("Build live ISO"), nur manuell. Prüft zuerst, ob das Image in der GHCR öffentlich lesbar ist.
+  - `build-disk.yml` (BIB) bleibt für Versuche bestehen, ist aber nicht mehr der Standardweg.
+- **Folgen:**
+  - Secure Boot: Die Live-ISO startet mit dem signierten Fedora-Kernel. Das installierte System nutzt den Bazzite-Kernel, der mit dem Schlüssel von Universal Blue signiert ist. Der Installer meldet diesen Schlüssel zur Aufnahme an (MOK). Beim ersten Neustart erscheint ein blauer Bildschirm "MOK management", dort "Enroll MOK" wählen, Passwort `universalblue` (öffentlich bekanntes Standardpasswort von Universal Blue, kein Geheimnis). Ein eigener Orbis-Schlüssel ist ein späteres Thema.
+  - Die ISO enthält das komplette Orbis-Image und die vorinstallierten Flatpaks (gleiche Liste wie Bazzite KDE), sie wird mehrere GB gross. Installation funktioniert ohne Internet. Nach der Installation stellt das System auf Updates aus `ghcr.io/mikehauser/project-orbis:latest` um.
+  - Bazzite-Änderungen am Ordner `installer/` müssen gelegentlich verglichen und übernommen werden (Commit oben als Bezugspunkt).
+  - Einige Bazzite-Namen bleiben vorerst sichtbar oder technisch nötig: Anaconda-Profil `bazzite` (passt zu `ID=bazzite` in os-release, absichtlich unverändert), Partitionsbezeichnung `bazzite_xboot`, Bazzite-Texte in der Terminal-Begrüssung der Live-Sitzung, Link zur Bazzite-Secure-Boot-Dokumentation. Eigenes Branding für den Installer folgt in Phase 2 und 5.

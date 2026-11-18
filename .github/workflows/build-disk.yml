@@ -2,6 +2,9 @@
 # Project Orbis – Installer-ISO oder VM-Festplattenabbild aus dem Container-Image erzeugen
 # (bootc-image-builder). Abgeleitet von ublue-os/image-template (Apache-2.0), siehe NOTICE.
 #
+# HINWEIS (18.11.2026): Nicht mehr der Standardweg für die ISO. bootc-image-builder findet bei
+# Bazzite auf Fedora 45 die Installer-Pakete nicht. Die ISO kommt aus build-iso.yml (ADR 0007).
+#
 # Läuft NUR manuell und setzt voraus, dass "Build container image" schon erfolgreich lief,
 # denn das Abbild wird aus dem Image in der GHCR gebaut. Ergebnisse sind mehrere GB gross.
 # Voraussetzung: Das Image in der GHCR ist erreichbar (siehe docs/adr/0006-image-build-und-hosting.md).

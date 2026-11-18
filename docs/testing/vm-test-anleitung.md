@@ -10,11 +10,14 @@ Zweck: Installer, Desktop, Design, Updates und Rollback gefahrlos testen. **Nich
 
 ## VM anlegen (Hyper-V-Manager)
 1. Neu > Virtueller Computer, **Generation 2**.
-2. Arbeitsspeicher: 8 GB (statischer Speicher), virtuelle CPU: 4.
+2. Arbeitsspeicher: 8 GB, **"Dynamischen Arbeitsspeicher verwenden" ausschalten** (die Live-ISO bricht unter etwa 5 GB erkanntem Speicher ab), virtuelle CPU: 4.
 3. Virtuelle Festplatte: 80 GB, Ort: `D:\VMs\orbis-test`.
 4. Netzwerk: "Default Switch".
 5. Einstellungen > Sicherheit > Secure Boot: Vorlage **"Microsoft UEFI-Zertifizierungsstelle"** wählen (für Linux nötig). Zum Fehlersuchen darf Secure Boot vorübergehend aus sein.
-6. ISO als DVD-Laufwerk einlegen, von DVD starten.
+6. ISO als DVD-Laufwerk einlegen, von DVD starten. Die ISO kommt aus dem Workflow "Build live ISO" (GitHub > Actions > Lauf öffnen > unten bei Artifacts `orbis-live-iso` herunterladen, ZIP entpacken).
+   - Im Startmenü der ISO "Orbis starten / installieren" wählen. Es startet eine Live-Sitzung, danach erscheint ein Willkommensdialog mit "Orbis installieren".
+   - In der VM nur die virtuelle Festplatte der VM auswählen. Rechts oben zeigt die Live-Sitzung eine Liste der erkannten Laufwerke.
+   - **Secure Boot nach der Installation:** Beim ersten Neustart erscheint ein blauer Bildschirm "MOK management". "Enroll MOK" > "Continue" > "Yes" wählen und das Passwort `universalblue` eingeben (öffentliches Standardpasswort von Universal Blue, siehe ADR 0007), dann "Reboot". Ohne diesen Schritt startet das installierte System mit Secure Boot nicht.
 7. **Image-Variante für die VM:** die normale Variante (Mesa, ohne NVIDIA). Die VM hat keine NVIDIA-Karte, die NVIDIA-Images sind dort nicht sinnvoll.
 
 ## Nach jedem Test

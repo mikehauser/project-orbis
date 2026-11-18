@@ -35,8 +35,8 @@ Jede Funktion hat genau einen der Status **geplant**, **implementiert** oder **g
 ## Befehle
 - Image lokal bauen (nur Linux mit Podman, nicht auf Mikes Windows-Rechner): `just build`
 - Just-Syntax prüfen: `just check`
-- Cloud-Build läuft nur manuell: GitHub > Actions > "Build container image" > "Run workflow", danach "Build disk images" für die ISO. Hosting: öffentliches Repository (ADR 0006). Bisher nie ausgeführt.
+- Cloud-Build läuft nur manuell: GitHub > Actions > "Build container image" > "Run workflow", danach "Build live ISO" für die ISO (Titanoboa, ADR 0007). "Build disk images" (bootc-image-builder) nur noch für Versuche, scheitert derzeit an Fedora 45. Hosting: öffentliches Repository (ADR 0006).
 - Name und Marke: nur `branding/branding.env`. Image-Name im Register: `orbis-image.env`.
 
 ## Entscheidungen
-Siehe `docs/adr/`. Aktuell: 0001 Basis, 0002 Projektname, 0003 NVIDIA-Strategie (Pascal), 0004 Entwicklungsumgebung, 0005 Testlaufwerk und Laufwerkstypen (E: ist eine mechanische Festplatte, VM zuerst), 0006 Image-Build und Hosting (entschieden: Repository öffentlich).
+Siehe `docs/adr/`. Aktuell: 0001 Basis, 0002 Projektname, 0003 NVIDIA-Strategie (Pascal), 0004 Entwicklungsumgebung, 0005 Testlaufwerk und Laufwerkstypen (E: ist eine mechanische Festplatte, VM zuerst), 0006 Image-Build und Hosting (entschieden: Repository öffentlich), 0007 ISO-Erstellung mit Titanoboa (vorgeschlagen, zum Testen umgesetzt).

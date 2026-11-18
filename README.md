@@ -19,7 +19,8 @@ mit eigenem Desktop, eigenem Design und eigenem Update-Kanal.
 | `branding/branding.env` | **Einzige** Stelle für Namen und Marke |
 | `image/` | Containerfile, Build-Skript, eigene Systemdateien |
 | `orbis-image.env`, `Justfile` | Parameter und Befehle für den Image-Build |
-| `disk_config/iso.toml` | Konfiguration des Installers (ISO) |
+| `disk_config/` | Konfiguration für bootc-image-builder (nur noch für Versuche, siehe ADR 0007) |
 | `.github/workflows/` | Cloud-Build (nur manuell gestartet) |
 | `NOTICE`, `third_party/` | Herkunft und Lizenz übernommener Teile (Apache-2.0) |
-| `desktop/`, `apps/`, `services/`, `compat-db/`, `installer/`, `tests/` | Noch leer, werden ab Phase 2 gefüllt |
+| `installer/` | Live-ISO mit Installer (abgeleitet von Bazzite, siehe ADR 0007) |
+| `desktop/`, `apps/`, `services/`, `compat-db/`, `tests/` | Noch leer, werden ab Phase 2 gefüllt |

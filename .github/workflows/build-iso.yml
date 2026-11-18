@@ -1,0 +1,133 @@
+---
+# Project Orbis – Live-ISO mit Installer bauen (Titanoboa, gleicher Weg wie die offiziellen Bazzite-ISOs).
+# Abgeleitet von ublue-os/bazzite .github/workflows/build_iso.yml (Apache-2.0), siehe NOTICE
+# und docs/adr/0007-iso-erstellung.md.
+#
+# Läuft NUR manuell und setzt voraus, dass "Build container image" schon erfolgreich lief,
+# denn die ISO enthält das Orbis-Image aus der GHCR. Ergebnis: eine ISO von mehreren GB als
+# Job-Artefakt (3 Tage aufbewahrt).
+name: Build live ISO
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag des Orbis-Images in der GHCR"
+        required: true
+        default: latest
+        type: string
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}  # Ergebnis von build.yml, synchron halten
+  IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # nicht ändern
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-iso
+  cancel-in-progress: true
+
+jobs:
+  build-iso:
+    name: Build live ISO
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    env:
+      TAG: ${{ inputs.tag }}  # als Variable, nie direkt in Skripte einsetzen
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Prepare environment
+        run: |
+          # Image-Adresse klein schreiben, Name nur aus branding/branding.env
+          source branding/branding.env
+          IMAGE_REF="${IMAGE_REGISTRY,,}/${IMAGE_NAME,,}:${TAG}"
+          echo "IMAGE_REF=${IMAGE_REF}" >> "${GITHUB_ENV}"
+          echo "ISO_NAME=${ORBIS_OS_ID}-live-${TAG}-amd64.iso" >> "${GITHUB_ENV}"
+          echo "Image: ${IMAGE_REF}"
+
+      # Die ISO lädt das Image beim Bauen ohne Anmeldung herunter. Ist das Paket in der GHCR
+      # noch privat, bricht der Lauf hier mit einer klaren Meldung ab statt später.
+      - name: Check that the image is publicly readable
+        run: |
+          repo="${IMAGE_REF#ghcr.io/}"; repo="${repo%:*}"
+          token=$(curl -fsS "https://ghcr.io/token?scope=repository:${repo}:pull" | jq -r .token)
+          code=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer ${token}" \
+            -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.oci.image.manifest.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/${repo}/manifests/${TAG}")
+          echo "Antwort der GHCR: ${code}"
+          if [[ "${code}" != "200" ]]; then
+            echo "::error::Image ${IMAGE_REF} ist nicht öffentlich lesbar (HTTP ${code}). Paket in GitHub unter Packages > ${repo##*/} > Package settings auf Public stellen."
+            exit 1
+          fi
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@ceedf095f4ec1a097402bc6bd80831f2e1a6fde6 # v2.0.0
+        with:
+          tool-cache: true
+
+      # Wie bei Bazzite: Container-Speicher auf ein grosses, komprimiertes Btrfs-Abbild legen,
+      # damit Image, Flatpaks und ISO auf dem Runner Platz haben.
+      - name: Mount Container Storage BTRFS Loopback
+        run: |
+          sudo truncate -s 110G /mnt/podman-storage.img
+          sudo mkfs.btrfs -f -m single -d single /mnt/podman-storage.img
+          sudo podman system reset --force
+          sudo systemctl stop podman.service || true
+          LOOP=$(sudo losetup --find --show --direct-io=on /mnt/podman-storage.img)
+          sudo mkdir -p /mnt/podman-storage
+          sudo mount -o compress-force=zstd:2,discard=async,noatime "$LOOP" /mnt/podman-storage
+          sudo mkdir -p /mnt/podman-storage/storage /mnt/podman-storage/tmp
+          sudo mount --bind /mnt/podman-storage/storage /var/lib/containers/storage
+          sudo systemctl start podman.service || true
+
+      - name: Build live environment image
+        run: |
+          sudo env TMPDIR=/mnt/podman-storage/tmp podman build \
+            --cap-add sys_admin \
+            --security-opt label=disable \
+            --build-arg BASE_IMAGE="${IMAGE_REF}" \
+            --build-arg INSTALL_IMAGE_PAYLOAD="${IMAGE_REF}" \
+            -f installer/Containerfile \
+            -t localhost/payload:latest .
+
+      - name: Show disk space
+        if: always()
+        run: |
+          sudo df -h
+          sudo du -sh /mnt/podman-storage.img
+
+      - name: Build ISO
+        uses: ublue-os/titanoboa@5c457c3d0518bd17e754be0fd98a60d29d26abb4
+        id: build
+        with:
+          image-ref: localhost/payload:latest
+          iso-dest: ${{ env.ISO_NAME }}
+
+      - name: Move ISO to upload directory
+        id: upload-directory
+        shell: bash
+        run: |
+          ISO_UPLOAD_DIR=${{ github.workspace }}/upload
+          ISO_PATH=${{ steps.build.outputs.iso-dest }}
+          ISO_FILE=$(basename "${ISO_PATH}")
+          mkdir -p "${ISO_UPLOAD_DIR}"
+          mv "${ISO_PATH}" "${ISO_UPLOAD_DIR}"
+          (cd "${ISO_UPLOAD_DIR}" && sha256sum "${ISO_FILE}" | tee "${ISO_FILE}-CHECKSUM")
+          ls -lh "${ISO_UPLOAD_DIR}"
+          echo "iso-upload-dir=${ISO_UPLOAD_DIR}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload ISO and checksum to job artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: orbis-live-iso
+          path: ${{ steps.upload-directory.outputs.iso-upload-dir }}
+          if-no-files-found: error
+          # kurz halten, damit nicht unnötig Speicher belegt wird
+          retention-days: 3
+          compression-level: 0
+          overwrite: true
