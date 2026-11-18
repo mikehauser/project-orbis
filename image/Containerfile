@@ -1,0 +1,29 @@
+# Project Orbis – Image-Definition
+#
+# Baut das Orbis-Image als dünne eigene Schicht auf dem Bazzite-Basisimage.
+# Upstream-Code (Fedora, Bazzite, KDE) wird nicht verändert, nur überlagert.
+# Build-Kontext ist das Repository-Hauptverzeichnis (siehe Justfile).
+# Entscheidungen: docs/adr/0001-linux-basis.md, docs/adr/0006-image-build-und-hosting.md
+
+# Build-Skripte, eigene Dateien und Branding werden eingebunden, ohne ins Endimage zu gelangen
+FROM scratch AS ctx
+COPY image/build_files /
+COPY image/system_files /system_files
+COPY branding /branding
+
+# Basisimage: Bazzite, Desktop-Variante mit KDE Plasma und offenen Grafiktreibern (Mesa).
+# ":stable" folgt immer der aktuellen stabilen Bazzite-Version.
+# Varianten mit NVIDIA-Treibern (inkl. Pascal-Legacy) folgen nach Prüfung, siehe ADR 0003.
+FROM ghcr.io/ublue-os/bazzite:stable
+
+### ÄNDERUNGEN
+# Alles Eigene passiert in image/build_files/build.sh
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/build.sh
+
+### PRÜFUNG
+# Stellt sicher, dass das fertige Image ein gültiges bootc-Image ist
+RUN bootc container lint

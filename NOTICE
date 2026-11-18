@@ -1,0 +1,16 @@
+Project Orbis
+=============
+
+Teile dieses Repositories sind von ublue-os/image-template abgeleitet
+(https://github.com/ublue-os/image-template, Lizenz Apache-2.0, Kopie unter
+third_party/image-template/LICENSE):
+  - Justfile
+  - .github/workflows/build.yml
+  - .github/workflows/build-disk.yml
+  - disk_config/iso.toml
+  - Aufbau von image/Containerfile und image/build_files/build.sh
+
+Änderungen gegenüber der Vorlage: Pfade, Branding, Basisimage, Auslösung der
+Workflows, optionale Signierung, nur ISO-Ausgabe.
+
+Eine eigene Lizenz für Orbis-eigenen Code ist noch nicht gewählt (offen, vor Veröffentlichung klären).
