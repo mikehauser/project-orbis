@@ -1,0 +1,19 @@
+# ADR 0006 – Image-Build und Hosting (Entscheidung offen)
+
+- **Status:** offen, Entscheidung von Mike nötig (18.11.2026)
+- **Kontext:** Das Orbis-Image und die Installer-ISO werden in GitHub Actions gebaut. Das Image liegt danach in der GitHub Container Registry (GHCR), die ISO als Build-Artefakt. Beides ist gross (Bazzite-ISOs sind 6 bis 9 GB gross, Quelle: ComputerBase-Downloadseite, 18.11.2026). Laut GitHub-Dokumentation (docs.github.com, 18.11.2026) gilt für **GitHub Free**:
+  - Private Repositories: Artefakt- und Package-Speicher zusammen **500 MB**. Darüber werden 0,25 USD pro GB und Monat berechnet. Ohne hinterlegte Zahlungsmethode wird die Nutzung nach Ausschöpfen des Kontingents blockiert.
+  - Private Repositories: Actions-Kontingent entspricht etwa 2000 Linux-Minuten pro Monat.
+  - Öffentliche Repositories: Standard-Runner sind kostenlos.
+  - Folge: Ein Build des Images in einem **privaten Repository mit Free-Plan ist nicht möglich**. Welchen Plan Mike hat, ist nicht bekannt.
+- **Optionen:**
+  - **A. Repository öffentlich machen.** Kostenlos. Inhalt ist nur Konfiguration, keine Geheimnisse. Nachteile: Name und Projekt sind sofort sichtbar, bevor die Markenrecherche (ADR 0002) gemacht ist, und das Image wäre öffentlich abrufbar. Widerspricht dem Wunsch "zuerst privat".
+  - **B. Privat bleiben und Speicher bezahlen.** Zahlungsmethode bei GitHub hinterlegen, Ausgabenlimit setzen. Grobe Schätzung: Image plus ISO-Artefakt zusammen etwa 15 bis 20 GB, also in der Grössenordnung von 4 bis 5 USD pro Monat, solange Artefakte kurz aufbewahrt werden (Schätzung, nicht gemessen).
+  - **C. Lokal bauen.** WSL2 mit Podman auf einem Laufwerk ausser C:. Aufwendig, nicht geprüft, ob der ISO-Build in WSL2 funktioniert.
+  - **D. Hybrid (ungeprüft).** Repository privat, nur das Container-Image öffentlich schalten. Der ISO-Artefakt-Speicher bleibt ein Problem. Nicht bewertet.
+- **Empfehlung:** B, weil Mike "zuerst privat" ausdrücklich will und die Kosten klein sind. Mit Ausgabenlimit (z. B. 5 USD) bleibt das Risiko begrenzt. Bevor Freunde Orbis installieren und Updates beziehen, muss das Image ohnehin öffentlich oder per Zugangsdaten erreichbar sein (siehe Folgen).
+- **Folgen:**
+  - Die Workflows `build.yml` und `build-disk.yml` laufen bis zur Entscheidung nur manuell. Sie wurden noch nie ausgeführt.
+  - Updates auf installierten Systemen holen das Image aus der GHCR. Ein privates Image können Freunde nicht ohne Zugangsdaten abrufen. Für die Weitergabe muss das Package öffentlich werden (Phase 5, nach Markenrecherche) oder es braucht Zugangsdaten.
+  - Signierung (cosign) ist im Workflow vorbereitet, aber nur aktiv, wenn das Repository-Secret `SIGNING_SECRET` existiert. Der Schlüssel wird nie ins Repository gelegt. Einrichtung vor der Weitergabe an Freunde.
+  - Das Basisimage ist `ghcr.io/ublue-os/bazzite:stable` (laut Bazzite-Readme und Vorlage). Die Existenz des Tags wurde von hier aus nicht geprüft.

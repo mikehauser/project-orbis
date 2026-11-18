@@ -3,7 +3,7 @@
 Orbis ist ein eigenständiges Gaming- und Multimedia-Betriebssystem auf Linux-Basis
 mit eigenem Desktop, eigenem Design und eigenem Update-Kanal.
 
-**Status:** Phase 0 (Fundament). Alles ist **geplant**, nichts ist implementiert oder getestet.
+**Status:** Phase 1 begonnen. Image-Definition und Build-Workflows sind geschrieben, aber **noch nie gebaut und nicht getestet**. Build-Hosting ist offen (ADR 0006).
 **Sichtbarkeit:** privat (Freunde), später öffentlich. Vor der Veröffentlichung gehört eine Markenrecherche zum Namen (siehe `docs/adr/0002-projektname.md`).
 
 ## Wo steht was
@@ -17,4 +17,9 @@ mit eigenem Desktop, eigenem Design und eigenem Update-Kanal.
 | `docs/hardware.md` | Referenz-Testsystem und Datenträger |
 | `docs/testing/` | Testspiele, VM-Anleitung (optional), Checkliste für Tests auf echter Hardware |
 | `branding/branding.env` | **Einzige** Stelle für Namen und Marke |
-| `image/`, `desktop/`, `apps/`, `services/`, `compat-db/`, `installer/`, `tests/` | Noch leer, werden ab Phase 1 gefüllt |
+| `image/` | Containerfile, Build-Skript, eigene Systemdateien |
+| `orbis-image.env`, `Justfile` | Parameter und Befehle für den Image-Build |
+| `disk_config/iso.toml` | Konfiguration des Installers (ISO) |
+| `.github/workflows/` | Cloud-Build (nur manuell gestartet) |
+| `NOTICE`, `third_party/` | Herkunft und Lizenz übernommener Teile (Apache-2.0) |
+| `desktop/`, `apps/`, `services/`, `compat-db/`, `installer/`, `tests/` | Noch leer, werden ab Phase 2 gefüllt |
