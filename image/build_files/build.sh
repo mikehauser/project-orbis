@@ -34,6 +34,20 @@ set_kv "${OS_RELEASE}" PRETTY_NAME "${ORBIS_OS_NAME} (basiert auf Bazzite)"
 set_kv "${OS_RELEASE}" ORBIS_PROJECT "${ORBIS_PROJECT_NAME}"
 set_kv "${OS_RELEASE}" ORBIS_BASE "bazzite"
 
+# KDE "Über dieses System" liest Name, Variante, Logo und Webseite nicht aus os-release,
+# sondern aus /etc/xdg/kcm-about-distrorc. Bazzite trägt dort "Bazzite" ein (gefunden im
+# VM-Test T001, 18.11.2026). Wir überschreiben die Datei mit Werten aus branding.env.
+# Logo: vorerst das vorhandene, ein Orbis-Logo folgt in Phase 2.
+KCM_ABOUT="/etc/xdg/kcm-about-distrorc"
+KCM_LOGO="$(sed -n 's/^LogoPath=//p' "${KCM_ABOUT}" 2>/dev/null || true)"
+cat > "${KCM_ABOUT}" <<EOF
+[General]
+Name=${ORBIS_OS_NAME}
+Variant=${ORBIS_EDITION} (basiert auf Bazzite)
+${KCM_LOGO:+LogoPath=${KCM_LOGO}}
+EOF
+cat "${KCM_ABOUT}"
+
 # Branding-Datei ins System legen, damit spätere eigene Apps den Namen daraus lesen
 install -Dm644 /ctx/branding/branding.env /usr/share/orbis/branding.env
 
