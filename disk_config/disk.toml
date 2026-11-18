@@ -1,0 +1,7 @@
+# Konfiguration für VM-Festplattenabbilder (qcow2, raw), gebaut mit bootc-image-builder.
+# Basiert auf ublue-os/image-template (Apache-2.0), siehe NOTICE.
+# Das Abbild ist sparse, die virtuelle Grösse gibt Platz für System, Steam und Spiele in der VM.
+
+[[customizations.filesystem]]
+mountpoint = "/"
+minsize = "64 GiB"
