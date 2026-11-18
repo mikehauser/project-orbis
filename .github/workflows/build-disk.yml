@@ -9,6 +9,12 @@ name: Build disk images
 
 on:
   workflow_dispatch:
+    inputs:
+      image:
+        description: "Optional: anderes Image zum Vergleich, z. B. ghcr.io/ublue-os/bazzite:stable (leer = Orbis-Image)"
+        required: false
+        default: ""
+        type: string
 
 env:
   IMAGE_NAME: ${{ github.event.repository.name }}  # Ergebnis von build.yml, synchron halten
@@ -42,8 +48,6 @@ jobs:
 
       - name: Maximize build space
         uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
-        with:
-          remove-codeql: true
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -56,13 +60,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Zur Fehlersuche: zeigt, welche Distribution der ISO-Builder im Image erkennt
+      - name: Show image identity
+        env:
+          TARGET_IMAGE: ${{ inputs.image || format('{0}/{1}:{2}', env.IMAGE_REGISTRY, env.IMAGE_NAME, env.DEFAULT_TAG) }}
+        run: |
+          echo "Image: ${TARGET_IMAGE}"
+          # Nur Diagnose: ein Fehler hier soll den Build nicht abbrechen
+          sudo podman pull "${TARGET_IMAGE}" || echo "Hinweis: Abruf zur Diagnose fehlgeschlagen"
+          sudo podman run --rm --entrypoint cat "${TARGET_IMAGE}" /usr/lib/os-release || true
+
       - name: Build installer ISO
         id: build
         uses: osbuild/bootc-image-builder-action@8661cd3832544ad68c12dcde8681b13ab0f56a8d # main
         with:
           builder-image: ${{ env.BIB_IMAGE }}
           config-file: ./disk_config/iso.toml
-          image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
+          image: ${{ inputs.image || format('{0}/{1}:{2}', env.IMAGE_REGISTRY, env.IMAGE_NAME, env.DEFAULT_TAG) }}
           chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
           types: anaconda-iso
           # btrfs wie lokal im Justfile und bei Bazzite üblich
