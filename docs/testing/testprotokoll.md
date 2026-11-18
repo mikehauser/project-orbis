@@ -18,5 +18,5 @@ Jeder Test mit Datum, Umgebung, Version und Ergebnis. Tests in einer VM zählen 
 | Installation läuft durch (2. Versuch, ISO bis zum Ende eingelegt) | ✅ ja (installiertes System erreicht GRUB) |
 | MOK-Schlüssel aufnehmen (Secure Boot) | ❌ Der blaue MOK-Bildschirm ist nicht erschienen (oder wurde übersprungen). Beim Start: `shim_lock_verifier_write: bad shim signature` und `you need to load the kernel first`. Bedeutung: Secure Boot ist an, der Universal-Blue-Schlüssel für den Bazzite-Kernel ist nicht aufgenommen, darum wird der Kernel abgelehnt. Ursache, warum MokManager nicht kam, offen. Weiter: Secure Boot in der VM vorübergehend aus, danach Schlüssel mit `ujust enroll-secure-boot-key` nachträglich aufnehmen. |
 | Installiertes System startet, Anmeldung | ✅ ja, mit Secure Boot **aus** in der VM (21:05). Schlüsselaufnahme mit `ujust enroll-secure-boot-key` und Start mit Secure Boot an: später (Mike) |
-| Name "Orbis" in Systeminfo (os-release) | offen |
+| Name "Orbis" in Systeminfo (os-release) | ❌ KDE "Über dieses System" zeigt "Bazzite 45, Desktop Edition" (21:07). Ursache: KDE liest den Namen aus `/etc/xdg/kcm-about-distrorc`, das Bazzite mit "Bazzite" füllt, nicht aus os-release. Korrektur in Commit b727d2f, neuer Image-Build 44387820817. Prüfung über Update in der VM (`sudo bootc upgrade`). |
 | Update und Rollback | offen |
