@@ -35,8 +35,8 @@ Jede Funktion hat genau einen der Status **geplant**, **implementiert** oder **g
 ## Befehle
 - Image lokal bauen (nur Linux mit Podman, nicht auf Mikes Windows-Rechner): `just build`
 - Just-Syntax prüfen: `just check`
-- Cloud-Build läuft nur manuell: GitHub > Actions > "Build container image" > "Run workflow", danach "Build disk images" für die ISO. Voraussetzung: ADR 0006 entschieden. Bisher nie ausgeführt.
+- Cloud-Build läuft nur manuell: GitHub > Actions > "Build container image" > "Run workflow", danach "Build disk images" für die ISO. Hosting: öffentliches Repository (ADR 0006). Bisher nie ausgeführt.
 - Name und Marke: nur `branding/branding.env`. Image-Name im Register: `orbis-image.env`.
 
 ## Entscheidungen
-Siehe `docs/adr/`. Aktuell: 0001 Basis, 0002 Projektname, 0003 NVIDIA-Strategie (Pascal), 0004 Entwicklungsumgebung, 0005 Testlaufwerk und Laufwerkstypen (E: ist eine mechanische Festplatte, VM zuerst), 0006 Image-Build und Hosting (offen).
+Siehe `docs/adr/`. Aktuell: 0001 Basis, 0002 Projektname, 0003 NVIDIA-Strategie (Pascal), 0004 Entwicklungsumgebung, 0005 Testlaufwerk und Laufwerkstypen (E: ist eine mechanische Festplatte, VM zuerst), 0006 Image-Build und Hosting (entschieden: Repository öffentlich).

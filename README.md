@@ -3,8 +3,8 @@
 Orbis ist ein eigenständiges Gaming- und Multimedia-Betriebssystem auf Linux-Basis
 mit eigenem Desktop, eigenem Design und eigenem Update-Kanal.
 
-**Status:** Phase 1 begonnen. Image-Definition und Build-Workflows sind geschrieben, aber **noch nie gebaut und nicht getestet**. Build-Hosting ist offen (ADR 0006).
-**Sichtbarkeit:** privat (Freunde), später öffentlich. Vor der Veröffentlichung gehört eine Markenrecherche zum Namen (siehe `docs/adr/0002-projektname.md`).
+**Status:** Phase 1 begonnen. Image-Definition und Build-Workflows sind geschrieben, aber **noch nie gebaut und nicht getestet**. Das Repository ist öffentlich (ADR 0006), der erste Build steht aus.
+**Sichtbarkeit:** öffentliches Repository (Entscheidung 18.11.2026, ADR 0006). Der Name ist ein Arbeitsname, die Markenrecherche steht aus (siehe `docs/adr/0002-projektname.md`).
 
 ## Wo steht was
 

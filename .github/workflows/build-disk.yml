@@ -4,7 +4,7 @@
 #
 # Läuft NUR manuell und setzt voraus, dass "Build container image" schon erfolgreich lief,
 # denn die ISO wird aus dem Image in der GHCR gebaut. Die ISO ist mehrere GB gross.
-# Zum Speicherplatz siehe docs/adr/0006-image-build-und-hosting.md.
+# Voraussetzung: Das Image in der GHCR ist erreichbar (siehe docs/adr/0006-image-build-und-hosting.md).
 name: Build disk images
 
 on:
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      # Nötig, solange das Image privat ist (ungetestet, siehe ADR 0006)
+      # Nötig, falls das Image noch privat ist (ungetestet, siehe ADR 0006)
       - name: Login to GitHub Container Registry
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
         with:

@@ -2,10 +2,9 @@
 # Project Orbis – Container-Image bauen und in die GitHub Container Registry (GHCR) hochladen.
 # Abgeleitet von ublue-os/image-template (Apache-2.0), siehe NOTICE.
 #
-# WICHTIG: Dieser Workflow startet NUR manuell (workflow_dispatch). Grund: Das Basisimage ist
-# mehrere GB gross. In einem privaten Repository mit GitHub Free (500 MB Speicher) ist ein Build
-# nicht möglich. Siehe docs/adr/0006-image-build-und-hosting.md. Automatische Starts (push,
-# schedule) werden erst nach dieser Entscheidung aktiviert.
+# WICHTIG: Dieser Workflow startet NUR manuell (workflow_dispatch). Das Repository ist öffentlich
+# (Standard-Runner kostenlos, siehe docs/adr/0006-image-build-und-hosting.md). Automatische Starts
+# (push, schedule) werden erst aktiviert, wenn der erste manuelle Build erfolgreich war.
 name: Build container image
 on:
   workflow_dispatch:
