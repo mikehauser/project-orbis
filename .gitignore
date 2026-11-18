@@ -1,0 +1,12 @@
+# Build-Ergebnisse und grosse Dateien
+*.iso
+*.img
+*.qcow2
+*.vhdx
+out/
+build/
+# Lokale Einstellungen und Geheimnisse
+.env.local
+*.key
+*.pem
+cosign.key
