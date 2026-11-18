@@ -17,6 +17,7 @@ Zweck: Installer, Desktop, Design, Updates und Rollback gefahrlos testen. **Nich
 6. ISO als DVD-Laufwerk einlegen, von DVD starten. Die ISO kommt aus dem Workflow "Build live ISO" (GitHub > Actions > Lauf öffnen > unten bei Artifacts `orbis-live-iso` herunterladen, ZIP entpacken).
    - Im Startmenü der ISO "Orbis starten / installieren" wählen. Es startet eine Live-Sitzung, danach erscheint ein Willkommensdialog mit "Orbis installieren".
    - In der VM nur die virtuelle Festplatte der VM auswählen. Rechts oben zeigt die Live-Sitzung eine Liste der erkannten Laufwerke.
+   - **Die ISO während der Installation nie auswerfen.** Die Live-Sitzung liest Orbis direkt von der ISO, ohne sie bricht die Installation mit "input/output error" ab (Test T001). Erst wenn der Installer "abgeschlossen" meldet: Live-Sitzung herunterfahren (nicht neu starten), VM ist aus, dann unter Medien > DVD-Laufwerk die ISO auswerfen und die VM wieder starten.
    - **Secure Boot nach der Installation:** Beim ersten Neustart erscheint ein blauer Bildschirm "MOK management". "Enroll MOK" > "Continue" > "Yes" wählen und das Passwort `universalblue` eingeben (öffentliches Standardpasswort von Universal Blue, siehe ADR 0007), dann "Reboot". Ohne diesen Schritt startet das installierte System mit Secure Boot nicht.
 7. **Image-Variante für die VM:** die normale Variante (Mesa, ohne NVIDIA). Die VM hat keine NVIDIA-Karte, die NVIDIA-Images sind dort nicht sinnvoll.
 
