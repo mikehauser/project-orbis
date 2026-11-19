@@ -38,3 +38,18 @@ Jeder Test mit Datum, Umgebung, Version und Ergebnis. Tests in einer VM zählen 
 | Rechnername `orbis` | nicht geprüft |
 | Rückmeldung Mike | "das hat er gemacht, aber die Idee ist ja ein komplett neues Desktop-Design" → nächster Schritt Desktop-Design (Phase 2) |
 
+
+## T003 – Desktop-Design v1 (Update in der VM)
+
+- **Datum:** 19.11.2026, 13:20
+- **Getestet von:** Mike
+- **Umgebung:** gleiche Hyper-V-VM wie T001/T002, bestehender Benutzer
+- **Version:** Image aus Lauf 44514512621 (Commit e7de123), Digest `sha256:52557724…f355`
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Update aktiv | ✅ `bootc upgrade` meldet "No update available" für `525577…` |
+| Design wechselt beim bestehenden Benutzer automatisch | ❌ nein, weiterhin Bazzite-Aussehen (Benutzer hat eigene gespeicherte Einstellungen). Erwartung in `desktop/README.md` war zu optimistisch (Farben sollten wechseln). |
+| Design mit `plasma-apply-lookandfeel -a org.orbis.desktop --resetLayout` anwenden | ✅ Mike: "jetzt tut sich was" (Details und Screenshot offen) |
+| Nebenbefund | Konsole zeigt beim Start weiterhin "Welcome to Bazzite" und `ghcr.io/ublue-os/bazzite:stable` (Bazzite-Begrüssung, ublue-motd) |
+| Rückmeldung Mike vor dem Anwenden | "gefühlt immer noch dasselbe, langweilig" |
