@@ -50,6 +50,7 @@ Jeder Test mit Datum, Umgebung, Version und Ergebnis. Tests in einer VM zählen 
 |---|---|
 | Update aktiv | ✅ `bootc upgrade` meldet "No update available" für `525577…` |
 | Design wechselt beim bestehenden Benutzer automatisch | ❌ nein, weiterhin Bazzite-Aussehen (Benutzer hat eigene gespeicherte Einstellungen). Erwartung in `desktop/README.md` war zu optimistisch (Farben sollten wechseln). |
-| Design mit `plasma-apply-lookandfeel -a org.orbis.desktop --resetLayout` anwenden | ✅ Mike: "jetzt tut sich was" (Details und Screenshot offen) |
+| Design mit `plasma-apply-lookandfeel -a org.orbis.desktop --resetLayout` anwenden | ✅ 13:24, Screenshot Mike: Hintergrund "Umlaufbahn" (dunkel) sichtbar, Taskleiste schwebt mittig unten, Knopf mit Orbis-Logo, Browser, Steam, Dateien, Einstellungen, Symbole, Uhr. Fensterrahmen dunkel. |
+| Befunde | Logo im Taskleisten-Knopf erscheint einfarbig weiss statt mit türkisem Gleiter. Taskleiste ist undurchsichtig (noch keine Glas-Optik). Startbildschirm noch nicht gesehen (erst nach Neuanmeldung). |
 | Nebenbefund | Konsole zeigt beim Start weiterhin "Welcome to Bazzite" und `ghcr.io/ublue-os/bazzite:stable` (Bazzite-Begrüssung, ublue-motd) |
 | Rückmeldung Mike vor dem Anwenden | "gefühlt immer noch dasselbe, langweilig" |
