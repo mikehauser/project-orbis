@@ -33,18 +33,35 @@ set_kv "${OS_RELEASE}" NAME "${ORBIS_OS_NAME}"
 set_kv "${OS_RELEASE}" PRETTY_NAME "${ORBIS_OS_NAME} (basiert auf Bazzite)"
 set_kv "${OS_RELEASE}" ORBIS_PROJECT "${ORBIS_PROJECT_NAME}"
 set_kv "${OS_RELEASE}" ORBIS_BASE "bazzite"
+# Logo-Name, Webseite, Fehlermeldungen und Standard-Rechnername (statt "bazzite").
+# Der Rechnername gilt nur, solange keiner gesetzt ist (/etc/hostname leer).
+# DOCUMENTATION_URL und SUPPORT_URL zeigen bewusst weiter auf Bazzite, deren Doku gilt für die Basis.
+# BOOTLOADER_NAME (Text im Startmenü) bleibt vorerst unverändert: Bootloader-Themen nur mit Zustimmung.
+set_kv "${OS_RELEASE}" LOGO "${ORBIS_OS_ID}-logo"
+set_kv "${OS_RELEASE}" HOME_URL "${ORBIS_HOME_URL}"
+set_kv "${OS_RELEASE}" BUG_REPORT_URL "${ORBIS_BUG_REPORT_URL}"
+set_kv "${OS_RELEASE}" DEFAULT_HOSTNAME "${ORBIS_OS_ID}"
+
+# Logo (ADR 0008) als Symbol ins System: alle Grössen plus SVG, dazu eine grosse Fassung
+LOGO_SRC="/ctx/branding/logo"
+for s in 16 22 24 32 48 64 128 256 512; do
+    install -Dm644 "${LOGO_SRC}/png/zeichen-${s}.png" \
+        "/usr/share/icons/hicolor/${s}x${s}/apps/${ORBIS_OS_ID}-logo.png"
+done
+install -Dm644 "${LOGO_SRC}/zeichen-farbe.svg" "/usr/share/icons/hicolor/scalable/apps/${ORBIS_OS_ID}-logo.svg"
+install -Dm644 "${LOGO_SRC}/png/zeichen-512.png" "/usr/share/pixmaps/${ORBIS_OS_ID}-logo.png"
 
 # KDE "Über dieses System" liest Name, Variante, Logo und Webseite nicht aus os-release,
 # sondern aus /etc/xdg/kcm-about-distrorc. Bazzite trägt dort "Bazzite" ein (gefunden im
 # VM-Test T001, 18.11.2026). Wir überschreiben die Datei mit Werten aus branding.env.
-# Logo: vorerst das vorhandene, ein Orbis-Logo folgt in Phase 2.
+# Logo und Webseite seit 19.11.2026 eigene (ADR 0008).
 KCM_ABOUT="/etc/xdg/kcm-about-distrorc"
-KCM_LOGO="$(sed -n 's/^LogoPath=//p' "${KCM_ABOUT}" 2>/dev/null || true)"
 cat > "${KCM_ABOUT}" <<EOF
 [General]
 Name=${ORBIS_OS_NAME}
 Variant=${ORBIS_EDITION} (basiert auf Bazzite)
-${KCM_LOGO:+LogoPath=${KCM_LOGO}}
+LogoPath=/usr/share/pixmaps/${ORBIS_OS_ID}-logo.png
+Website=${ORBIS_HOME_URL}
 EOF
 cat "${KCM_ABOUT}"
 
