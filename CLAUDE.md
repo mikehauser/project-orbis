@@ -39,4 +39,4 @@ Jede Funktion hat genau einen der Status **geplant**, **implementiert** oder **g
 - Name und Marke: nur `branding/branding.env`. Image-Name im Register: `orbis-image.env`.
 
 ## Entscheidungen
-Siehe `docs/adr/`. Aktuell: 0001 Basis, 0002 Projektname, 0003 NVIDIA-Strategie (Pascal), 0004 Entwicklungsumgebung, 0005 Testlaufwerk und Laufwerkstypen (E: ist eine mechanische Festplatte, VM zuerst), 0006 Image-Build und Hosting (entschieden: Repository öffentlich), 0007 ISO-Erstellung mit Titanoboa (entschieden).
+Siehe `docs/adr/`. Aktuell: 0001 Basis, 0002 Projektname, 0003 NVIDIA-Strategie (Pascal), 0004 Entwicklungsumgebung, 0005 Testlaufwerk und Laufwerkstypen (E: ist eine mechanische Festplatte, VM zuerst), 0006 Image-Build und Hosting (entschieden: Repository öffentlich), 0007 ISO-Erstellung mit Titanoboa (entschieden), 0008 Logo "Abflug" (entschieden, Markenprüfung offen).
