@@ -17,9 +17,10 @@ wie in `docs/architecture/overview.md` vorgesehen. Kein KDE-Code wird verändert
 - Die Datei `/etc/xdg/kdeglobals` von Bazzite wird so geändert, dass Orbis statt Valves "Vapor" das Standard-Design ist.
 
 ## Was Version 1 kann und was nicht
-- Schwebende, mittige Taskleiste mit Orbis-Logo als Knopf. Das Menü dahinter ist vorerst das KDE-Startmenü (Kickoff).
+- Bedienkonzept "Kommandozentrale" (ADR 0009, ersetzt die schwebende Taskleiste unten aus Version 1): schmale, durchscheinende Leiste oben mit Kern-Knopf, Programmen, Systemwerten und Uhr. Super-Taste und Ecke oben links öffnen die Übersicht. Hinter dem Kern-Knopf steckt vorerst das KDE-Startmenü (Kickoff).
   Das eigene **Kern-Menü** aus dem Entwurf (Suche, Weiterspielen, Systemanzeige) ist eine eigene App und folgt später.
 - Akzentfarbe: in KDE unter Systemeinstellungen > Farben frei wählbar.
-- Glas-Effekt der Taskleiste, eigene Schrift (Inter), Anmeldebildschirm (SDDM) und Start-Logo beim Hochfahren (Plymouth): folgen.
-- Bestehende Benutzer: Farben und Symbole wechseln automatisch, Taskleiste und Hintergrund erst über
-  Systemeinstellungen > Globales Design > Orbis > Anwenden, mit Häkchen bei "Desktop- und Fensterlayout".
+- Eigene Schrift (Inter), Anmeldebildschirm (SDDM) und Start-Logo beim Hochfahren (Plymouth): folgen.
+- Bestehende Benutzer übernehmen das Design nicht automatisch (Test T003). Anwenden mit
+  `plasma-apply-lookandfeel -a org.orbis.desktop --resetLayout` oder Systemeinstellungen > Globales Design > Orbis
+  mit Häkchen bei "Desktop- und Fensterlayout". Neue Benutzer bekommen es direkt.

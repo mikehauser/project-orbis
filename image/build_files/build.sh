@@ -104,6 +104,15 @@ render_tpl "${DESK}/wallpaper/package/metadata.json" "${WP}/metadata.json"
 # Farben und Symbole, Taskleiste und Hintergrund erst über "Globales Design" anwenden.
 sed -i "s|^LookAndFeelPackage=.*|LookAndFeelPackage=org.${ORBIS_OS_ID}.desktop|" /etc/xdg/kdeglobals
 grep -q "^LookAndFeelPackage=org.${ORBIS_OS_ID}.desktop$" /etc/xdg/kdeglobals
+# Bedienkonzept "Kommandozentrale" (ADR 0009): Super-Taste und Ecke oben links öffnen
+# die KWin-Übersicht (mit Suche) statt des Startmenüs. Systemweite Standardwerte,
+# eigene Einstellungen der Benutzer haben Vorrang.
+command -v kwriteconfig6 >/dev/null
+kwriteconfig6 --file /etc/xdg/kwinrc --group ModifierOnlyShortcuts --key Meta \
+    "org.kde.kglobalaccel,/component/kwin,org.kde.kglobalaccel.Component,invokeShortcut,Overview"
+kwriteconfig6 --file /etc/xdg/kwinrc --group Effect-overview --key BorderActivate 7
+cat /etc/xdg/kwinrc
+
 find "${LNF}" "${WP}" -type f | sort
 cat "${LNF}/contents/defaults"
 
