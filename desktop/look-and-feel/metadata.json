@@ -1,0 +1,11 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [{ "Name": "@VENDOR@" }],
+        "Description": "@OS_NAME@: dunkles Design mit schwebender Taskleiste",
+        "Id": "org.@OS_ID@.desktop",
+        "Name": "@OS_NAME@",
+        "Website": "@HOME_URL@"
+    },
+    "X-Plasma-APIVersion": "2"
+}

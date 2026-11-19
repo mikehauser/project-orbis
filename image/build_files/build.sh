@@ -69,7 +69,46 @@ cat "${KCM_ABOUT}"
 install -Dm644 /ctx/branding/branding.env /usr/share/orbis/branding.env
 
 # ---------------------------------------------------------------
-# 3. Pakete
+# 3. Desktop-Design (Phase 2): Globales Design, Farbschemata, Hintergrund, Startbildschirm
+# ---------------------------------------------------------------
+# Quellen in desktop/ sind Vorlagen mit Platzhaltern (@OS_NAME@ usw.), damit der Name
+# nur aus branding.env kommt. Siehe desktop/README.md.
+DESK="/ctx/desktop"
+render_tpl() {
+    sed -e "s|@OS_NAME@|${ORBIS_OS_NAME}|g" \
+        -e "s|@OS_ID@|${ORBIS_OS_ID}|g" \
+        -e "s|@VENDOR@|${ORBIS_VENDOR}|g" \
+        -e "s|@HOME_URL@|${ORBIS_HOME_URL}|g" \
+        "$1" > "$2"
+}
+
+LNF="/usr/share/plasma/look-and-feel/org.${ORBIS_OS_ID}.desktop"
+mkdir -p "${LNF}"
+cp -a "${DESK}/look-and-feel/." "${LNF}/"
+for f in metadata.json contents/defaults contents/layouts/org.kde.plasma.desktop-layout.js contents/splash/Splash.qml; do
+    render_tpl "${DESK}/look-and-feel/${f}" "${LNF}/${f}"
+done
+install -Dm644 /ctx/branding/logo/zeichen-farbe.svg "${LNF}/contents/splash/images/logo.svg"
+
+for s in Dunkel Hell; do
+    render_tpl "${DESK}/color-schemes/${s}.colors" "/usr/share/color-schemes/${ORBIS_OS_NAME}${s}.colors"
+done
+
+WP="/usr/share/wallpapers/${ORBIS_OS_NAME}"
+mkdir -p "${WP}"
+cp -a "${DESK}/wallpaper/package/." "${WP}/"
+render_tpl "${DESK}/wallpaper/package/metadata.json" "${WP}/metadata.json"
+
+# Standard-Design für alle Benutzer: Bazzite setzt Valves "Vapor", wir setzen Orbis.
+# Neue Benutzer bekommen Taskleiste und Hintergrund; bestehende Benutzer übernehmen
+# Farben und Symbole, Taskleiste und Hintergrund erst über "Globales Design" anwenden.
+sed -i "s|^LookAndFeelPackage=.*|LookAndFeelPackage=org.${ORBIS_OS_ID}.desktop|" /etc/xdg/kdeglobals
+grep -q "^LookAndFeelPackage=org.${ORBIS_OS_ID}.desktop$" /etc/xdg/kdeglobals
+find "${LNF}" "${WP}" -type f | sort
+cat "${LNF}/contents/defaults"
+
+# ---------------------------------------------------------------
+# 4. Pakete
 # ---------------------------------------------------------------
 # Phase 1: keine zusätzlichen Pakete. Eigene Pakete kommen mit Phase 2 und 3.
 # Beispiel: dnf5 install -y <paket>

@@ -10,6 +10,7 @@ FROM scratch AS ctx
 COPY image/build_files /
 COPY image/system_files /system_files
 COPY branding /branding
+COPY desktop /desktop
 
 # Basisimage: Bazzite, Desktop-Variante mit KDE Plasma und offenen Grafiktreibern (Mesa).
 # ":stable" folgt immer der aktuellen stabilen Bazzite-Version.

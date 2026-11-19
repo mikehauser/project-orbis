@@ -1,0 +1,7 @@
+{
+    "KPlugin": {
+        "Authors": [{ "Name": "@VENDOR@" }],
+        "Id": "@OS_NAME@",
+        "Name": "@OS_NAME@ – Umlaufbahn"
+    }
+}

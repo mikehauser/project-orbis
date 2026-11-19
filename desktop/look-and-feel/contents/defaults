@@ -1,0 +1,32 @@
+# Project Orbis – Standardwerte des Globalen Designs (gelten für neue Benutzer
+# und beim Anwenden unter Systemeinstellungen > Globales Design).
+[kdeglobals][KDE]
+widgetStyle=Breeze
+
+[kdeglobals][General]
+ColorScheme=@OS_NAME@Dunkel
+
+[kdeglobals][Icons]
+Theme=breeze-dark
+
+[plasmarc][Theme]
+name=default
+
+[Wallpaper]
+Image=@OS_NAME@
+
+[kcminputrc][Mouse]
+cursorTheme=breeze_cursors
+
+[kwinrc][WindowSwitcher]
+LayoutName=org.kde.breeze.desktop
+
+[kwinrc][DesktopSwitcher]
+LayoutName=org.kde.breeze.desktop
+
+[kwinrc][org.kde.kdecoration2]
+library=org.kde.breeze
+theme=Breeze
+
+[KSplash]
+Theme=org.@OS_ID@.desktop
