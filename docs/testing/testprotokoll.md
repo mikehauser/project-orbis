@@ -24,3 +24,17 @@ Jeder Test mit Datum, Umgebung, Version und Ergebnis. Tests in einer VM zählen 
 | Update aktivieren (Neustart) | ✅ 19.11.2026 11:10: Booted image `sha256:28dadca8…4b54`, Rollback image `a34d7344…28e7`. "Über dieses System" zeigt **Orbis 45, Prototyp (basiert auf Bazzite)**. Rest-Befunde: Webseiten-Link zeigt noch https://bazzite.gg (kommt aus os-release `HOME_URL`), Logo noch Bazzite (Phase 2), Rechnername jetzt `bazzite`. |
 | Rollback (`sudo bootc rollback`, Neustart) | ✅ 19.11.2026 11:18: VM startet wieder die vorherige Version, "Über dieses System" zeigt "Bazzite 45, Desktop Edition" (altes Image `a34d7344…`). Zurückwechseln auf das neue Image: zweites `bootc rollback` (Rückmeldung offen). |
 | Nebenbefund | Rechnername des installierten Systems ist `localhost-live` (aus der Live-Sitzung übernommen). Später prüfen, ob Bazzite das gleich macht, und Standardnamen setzen. |
+
+## T002 – Orbis-Logo im System (Update in der VM)
+
+- **Datum:** 19.11.2026, 12:20
+- **Getestet von:** Mike
+- **Umgebung:** gleiche Hyper-V-VM wie T001, Update mit `sudo bootc upgrade` und Neustart
+- **Version:** Image aus Lauf 44509509063 (Commit 14c4548), Digest `sha256:e5b6b284…315e`
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| "Über dieses System": Orbis-Logo, "Orbis 45", "Prototyp (basiert auf Bazzite)", Link zum Projekt | ✅ ja (Screenshot Mike) |
+| Rechnername `orbis` | nicht geprüft |
+| Rückmeldung Mike | "das hat er gemacht, aber die Idee ist ja ein komplett neues Desktop-Design" → nächster Schritt Desktop-Design (Phase 2) |
+
