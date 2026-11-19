@@ -9,4 +9,6 @@
   - Super-Taste und Ecke oben links öffnen die KWin-Übersicht mit Suchfeld (Standardwerte in `/etc/xdg/kwinrc`).
   - Dateien: `desktop/look-and-feel/contents/layouts/org.kde.plasma.desktop-layout.js`, `image/build_files/build.sh`.
 - **Grenzen von Version 1:** Systemwerte und Leiste nutzen vorhandene KDE-Widgets, das Aussehen entspricht dem Entwurf nur ungefähr. Eigene Widgets (z. B. "Was läuft gerade" in der Mitte, Kern-Menü wie im Entwurf) folgen als eigene Komponenten. In der VM gibt es keinen GPU-Sensor (keine echte Grafikkarte), dort bleibt der GPU-Wert leer.
-- **Status:** implementiert, nicht getestet.
+- **Test T004 (19.11.2026, VM):** Übersicht mit Suche funktioniert ("dann kommt auch Firefox"). Rückmeldung Mike: "sieht nicht annähernd so aus, wir sind noch immer bei der Taskleiste". Ursache: nur KDE-Standard-Widgets neu angeordnet.
+- **Version 2 (19.11.2026):** eigenes Plasma-Bauteil `desktop/plasmoids/kommandozentrale` (QML) im Stil des Entwurfs: Glas-Pillen für Suche (öffnet KRunner), "was läuft gerade" in der Mitte (Klick: Übersicht) und Systemwerte. Programmleiste entfällt. Kern-Knopf bleibt vorerst Kickoff (Liste aller Apps).
+- **Status:** Version 2 implementiert, nicht getestet. QML-Syntax lokal geprüft (pyside6-qmlformat); ob KDE das Bauteil fehlerfrei lädt, zeigt erst der Test in der VM.

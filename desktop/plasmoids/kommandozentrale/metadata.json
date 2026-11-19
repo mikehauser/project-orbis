@@ -1,0 +1,14 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [{ "Name": "@VENDOR@" }],
+        "Category": "System Information",
+        "Description": "Kommandozentrale: Suche, laufendes Programm und Systemwerte (ADR 0009)",
+        "Icon": "@OS_ID@-logo",
+        "Id": "org.@OS_ID@.kommandozentrale",
+        "Name": "@OS_NAME@ Kommandozentrale",
+        "Version": "1",
+        "Website": "@HOME_URL@"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

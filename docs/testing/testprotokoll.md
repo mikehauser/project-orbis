@@ -54,3 +54,14 @@ Jeder Test mit Datum, Umgebung, Version und Ergebnis. Tests in einer VM zählen 
 | Befunde | Logo im Taskleisten-Knopf erscheint einfarbig weiss statt mit türkisem Gleiter. Taskleiste ist undurchsichtig (noch keine Glas-Optik). Startbildschirm noch nicht gesehen (erst nach Neuanmeldung). |
 | Nebenbefund | Konsole zeigt beim Start weiterhin "Welcome to Bazzite" und `ghcr.io/ublue-os/bazzite:stable` (Bazzite-Begrüssung, ublue-motd) |
 | Rückmeldung Mike vor dem Anwenden | "gefühlt immer noch dasselbe, langweilig" |
+
+## T004 – Kommandozentrale Version 1 (VM)
+
+- **Datum:** 19.11.2026, 14:53
+- **Getestet von:** Mike
+- **Version:** Image aus Lauf 44526615555 (Commit 4618297), Digest `sha256:260a33c4…6c97`
+
+| Prüfpunkt | Ergebnis |
+|---|---|
+| Übersicht öffnen und darin suchen ("firefox") | ✅ Firefox wird gefunden |
+| Aussehen wie Entwurf B | ❌ Mike: "sieht nicht annähernd so aus, wir sind noch immer bei der Taskleiste" → Version 2 mit eigenem Bauteil |

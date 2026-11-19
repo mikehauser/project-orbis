@@ -94,6 +94,19 @@ for s in Dunkel Hell; do
     render_tpl "${DESK}/color-schemes/${s}.colors" "/usr/share/color-schemes/${ORBIS_OS_NAME}${s}.colors"
 done
 
+# Eigene Plasma-Bauteile (Widgets), z. B. die Kommandozentrale (ADR 0009)
+for pl in "${DESK}"/plasmoids/*/; do
+    name="$(basename "${pl}")"
+    dest="/usr/share/plasma/plasmoids/org.${ORBIS_OS_ID}.${name}"
+    mkdir -p "${dest}"
+    cp -a "${pl}." "${dest}/"
+    render_tpl "${pl}metadata.json" "${dest}/metadata.json"
+    find "${dest}" -name '*.qml' -print0 | while IFS= read -r -d '' q; do
+        render_tpl "${pl}${q#"${dest}/"}" "${q}"
+    done
+done
+ls -R /usr/share/plasma/plasmoids/org.${ORBIS_OS_ID}.*
+
 WP="/usr/share/wallpapers/${ORBIS_OS_NAME}"
 mkdir -p "${WP}"
 cp -a "${DESK}/wallpaper/package/." "${WP}/"

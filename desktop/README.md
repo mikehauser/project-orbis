@@ -9,6 +9,7 @@ wie in `docs/architecture/overview.md` vorgesehen. Kein KDE-Code wird verändert
 |---|---|---|
 | `look-and-feel/` | `/usr/share/plasma/look-and-feel/org.<id>.desktop/` | Standardwerte (Farben, Symbole, Fensterrahmen), Taskleisten-Aufbau, Startbildschirm, Vorschaubilder |
 | `color-schemes/` | `/usr/share/color-schemes/<Name>Dunkel.colors`, `<Name>Hell.colors` | Farbschemata aus dem Desktop-Entwurf (Akzent Türkis #5EEAD4, Violett #8B7CFF, Hell = "Papier" #F3EFE6) |
+| `plasmoids/` | `/usr/share/plasma/plasmoids/org.<id>.<name>/` | eigene Plasma-Bauteile, z. B. `kommandozentrale` (Leiste oben, ADR 0009) |
 | `wallpaper/` | `/usr/share/wallpapers/<Name>/` | Hintergrund "Umlaufbahn", hell und dunkel (KDE wählt passend zum Farbschema) |
 
 - Textdateien sind **Vorlagen** mit Platzhaltern `@OS_NAME@`, `@OS_ID@`, `@VENDOR@`, `@HOME_URL@`.
