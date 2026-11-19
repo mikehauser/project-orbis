@@ -20,5 +20,6 @@ Jeder Test mit Datum, Umgebung, Version und Ergebnis. Tests in einer VM zählen 
 | Installiertes System startet, Anmeldung | ✅ ja, mit Secure Boot **aus** in der VM (21:05). Schlüsselaufnahme mit `ujust enroll-secure-boot-key` und Start mit Secure Boot an: später (Mike) |
 | Name "Orbis" in Systeminfo (os-release) | ❌ KDE "Über dieses System" zeigt "Bazzite 45, Desktop Edition" (21:07). Ursache: KDE liest den Namen aus `/etc/xdg/kcm-about-distrorc`, das Bazzite mit "Bazzite" füllt, nicht aus os-release. Korrektur in Commit b727d2f, neuer Image-Build 44387820817. Prüfung über Update in der VM (`sudo bootc upgrade`). |
 | Update-Quelle (`sudo bootc status`) | ✅ Booted image `ghcr.io/mikehauser/project-orbis:latest`, Digest `sha256:a34d7344…28e7`, Zeitstempel 2026-11-18T17:27:56Z (21:09). Updates kommen aus dem eigenen Image. |
-| Update und Rollback | offen (Update auf Image aus Lauf 44387820817) |
+| Update herunterladen (`sudo bootc upgrade`) | ✅ 19.11.2026: neues Image `sha256:28dadca8…4b54` (Lauf 44387820817) bereitgestellt ("Staged"), 3 neue Schichten, 343,4 MB |
+| Update aktivieren und Rollback | offen. Erster Versuch: `bootc rollback` vor dem Neustart ausgeführt, dadurch war das Update noch nicht aktiv (Reihenfolge in der Anleitung präzisiert: Update, Neustart, prüfen, dann erst Rollback) |
 | Nebenbefund | Rechnername des installierten Systems ist `localhost-live` (aus der Live-Sitzung übernommen). Später prüfen, ob Bazzite das gleich macht, und Standardnamen setzen. |
